@@ -16,6 +16,8 @@ import CustomCursor from './components/CustomCursor';
 import BackToTop from './components/BackToTop';
 import WaveDivider from './components/WaveDivider';
 import EasterEgg from './components/EasterEgg';
+import { SectionTransition, ParallaxSection, RevealSection } from './components/ScrollAnimations';
+import { ChapterDivider } from './components/ChapterDividers';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,6 +51,14 @@ function App() {
         }
     }, [isLoading]);
 
+    // Smooth scroll enhancements
+    useEffect(() => {
+        if (!isLoading) {
+            // Refresh ScrollTrigger on load
+            ScrollTrigger.refresh();
+        }
+    }, [isLoading]);
+
     return (
         <>
             <AnimatePresence mode="wait">
@@ -76,12 +86,20 @@ function App() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2, type: 'spring' }}
                             style={{
-                                fontSize: '3rem',
-                                fontWeight: 700,
-                                letterSpacing: '-0.03em',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                             }}
                         >
-                            <span className="text-gradient">VA.</span>
+                            <img
+                                src="/images/logo/valelogo.jpeg"
+                                alt="Valentine Agam Logo"
+                                style={{
+                                    width: '120px',
+                                    height: 'auto',
+                                    borderRadius: '12px',
+                                }}
+                            />
                         </motion.div>
 
                         {/* Progress Bar */}
@@ -137,16 +155,56 @@ function App() {
                         <HeaderAdvanced />
 
                         <main>
-                            <HeroRevamped />
-                            <TechMarquee />
+                            {/* Hero - Grand entrance */}
+                            <ParallaxSection speed={0.3}>
+                                <HeroRevamped />
+                            </ParallaxSection>
+
+                            {/* Chapter 1: Skills */}
+                            <ChapterDivider number="Chapter 01" title="Technical Arsenal" />
+                            <RevealSection direction="up">
+                                <TechMarquee />
+                            </RevealSection>
+
                             <WaveDivider color="var(--bg-secondary)" />
-                            <VideoShowcase />
+
+                            {/* Chapter 2: Work Showcase */}
+                            <ChapterDivider number="Chapter 02" title="Live Demonstrations" />
+                            <SectionTransition>
+                                <VideoShowcase />
+                            </SectionTransition>
+
                             <WaveDivider color="var(--bg-primary)" flip />
-                            <ProjectsAdvanced />
-                            <StatsSection />
-                            <ExperienceTimeline />
-                            <AboutAdvanced />
-                            <CTASection />
+
+                            {/* Chapter 3: Featured Projects */}
+                            <ChapterDivider number="Chapter 03" title="Featured Creations" />
+                            <RevealSection direction="scale">
+                                <ProjectsAdvanced />
+                            </RevealSection>
+
+                            {/* Chapter 4: Achievements */}
+                            <ChapterDivider number="Chapter 04" title="Impact & Achievements" />
+                            <SectionTransition>
+                                <StatsSection />
+                            </SectionTransition>
+
+                            {/* Chapter 5: Journey */}
+                            <ChapterDivider number="Chapter 05" title="Professional Journey" />
+                            <RevealSection direction="left">
+                                <ExperienceTimeline />
+                            </RevealSection>
+
+                            {/* Chapter 6: About */}
+                            <ChapterDivider number="Chapter 06" title="The Person Behind" />
+                            <ParallaxSection speed={0.4}>
+                                <AboutAdvanced />
+                            </ParallaxSection>
+
+                            {/* Final Chapter: Connect */}
+                            <ChapterDivider number="Epilogue" title="Let's Create Together" />
+                            <SectionTransition>
+                                <CTASection />
+                            </SectionTransition>
                         </main>
 
                         <FooterAdvanced />
