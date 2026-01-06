@@ -101,6 +101,69 @@ const HeroRevamped = () => {
                 perspective: '1000px',
             }}
         >
+            {/* Video/Animated Background */}
+            <div
+                style={{
+                    position: 'absolute',
+                    inset: 0,
+                    overflow: 'hidden',
+                }}
+            >
+                {/* Background Image with Ken Burns Effect */}
+                <motion.div
+                    animate={{
+                        scale: [1, 1.1, 1],
+                    }}
+                    transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: 'url(/hero_animated_background.png)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.4)',
+                    }}
+                />
+
+                {/* Gradient Overlays for Depth */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `
+                            radial-gradient(ellipse at top, rgba(99, 102, 241, 0.15), transparent 50%),
+                            radial-gradient(ellipse at bottom, rgba(139, 92, 246, 0.15), transparent 50%),
+                            linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.8) 100%)
+                        `,
+                    }}
+                />
+
+                {/* Animated Gradient Overlay */}
+                <motion.div
+                    animate={{
+                        opacity: [0.3, 0.6, 0.3],
+                        background: [
+                            'radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 50%)',
+                            'radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%)',
+                            'radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 50%)',
+                        ],
+                    }}
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                    }}
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                    }}
+                />
+            </div>
+
             {/* Animated Grid Background */}
             <div
                 style={{
