@@ -5,21 +5,21 @@ const TechMarquee = () => {
     const [isPaused, setIsPaused] = useState(false);
 
     const technologies = [
-        { name: 'React', icon: '⚛️', color: '#61dafb' },
-        { name: 'Python', icon: '🐍', color: '#3776ab' },
-        { name: 'Flutter', icon: '📱', color: '#02569B' },
-        { name: 'Machine Learning', icon: '🤖', color: '#FF6F00' },
-        { name: 'UI/UX Design', icon: '🎨', color: '#FF4081' },
-        { name: 'Supabase', icon: '⚡', color: '#3ECF8E' },
-        { name: 'PostgreSQL', icon: '🐘', color: '#336791' },
-        { name: 'YOLO', icon: '👁️', color: '#00FFFF' },
-        { name: 'TensorFlow', icon: '🧠', color: '#FF6F00' },
-        { name: 'Figma', icon: '✨', color: '#F24E1E' },
-        { name: 'JavaScript', icon: '⚡', color: '#F7DF1E' },
-        { name: 'TypeScript', icon: '📘', color: '#3178C6' },
-        { name: 'Node.js', icon: '🟢', color: '#339933' },
-        { name: 'Electron', icon: '⚙️', color: '#47848F' },
-        { name: 'Flask', icon: '🍶', color: '#000000' },
+        { name: 'React', icon: '/images/tech/react.png', color: '#61dafb' },
+        { name: 'Python', icon: '/images/tech/python.png', color: '#3776ab' },
+        { name: 'Flutter', icon: '/images/tech/flutter.png', color: '#02569B' },
+        { name: 'Machine Learning', icon: '/images/tech/ml.png', color: '#FF6F00' },
+        { name: 'UI/UX Design', icon: '/images/tech/uiux.png', color: '#FF4081' },
+        { name: 'Supabase', icon: '/images/tech/supabase.png', color: '#3ECF8E' },
+        { name: 'PostgreSQL', icon: '/images/tech/postgresql.png', color: '#336791' },
+        { name: 'YOLO', icon: '/images/tech/yolo.png', color: '#00FFFF' },
+        { name: 'TensorFlow', icon: '/images/tech/tensorflow.png', color: '#FF6F00' },
+        { name: 'Figma', icon: '/images/tech/figma.png', color: '#F24E1E' },
+        { name: 'JavaScript', icon: '/images/tech/javascript.png', color: '#F7DF1E' },
+        { name: 'TypeScript', icon: '/images/tech/typescript.png', color: '#3178C6' },
+        { name: 'Node.js', icon: '/images/tech/nodejs.png', color: '#339933' },
+        { name: 'Electron', icon: '/images/tech/electron.png', color: '#47848F' },
+        { name: 'Flask', icon: '/images/tech/flask.png', color: '#000000' },
     ];
 
     // Triple the array for seamless loop
@@ -129,7 +129,16 @@ const TechMarquee = () => {
                             }}
                         />
 
-                        <span style={{ fontSize: '1.5rem' }}>{tech.icon}</span>
+                        <img
+                            src={tech.icon}
+                            alt={tech.name}
+                            style={{
+                                width: '32px',
+                                height: '32px',
+                                objectFit: 'contain',
+                                borderRadius: '6px',
+                            }}
+                        />
                         <span
                             style={{
                                 fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
@@ -192,7 +201,16 @@ const TechMarquee = () => {
                             }}
                         />
 
-                        <span style={{ fontSize: '1.5rem' }}>{tech.icon}</span>
+                        <img
+                            src={tech.icon}
+                            alt={tech.name}
+                            style={{
+                                width: '32px',
+                                height: '32px',
+                                objectFit: 'contain',
+                                borderRadius: '6px',
+                            }}
+                        />
                         <span
                             style={{
                                 fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',

@@ -3,7 +3,7 @@
    Clean + Dynamic + Premium
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=Creepster&family=Orbitron:wght@700;900&display=swap');
 
 :root {
   /* Color Palette - Rich Dark */
@@ -20,12 +20,18 @@
   --accent-secondary: #8b5cf6;
   --accent-glow: rgba(99, 102, 241, 0.4);
 
+  /* Hacker Theme Colors - Purple/Black/Red */
+  --hacker-green: #bf00ff;
+  --hacker-red: #ff0040;
+  --hacker-glow: rgba(191, 0, 255, 0.5);
+
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.12);
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
+  --font-hacker: 'Orbitron', 'Creepster', sans-serif;
 
   /* Spacing */
   --space-xs: 0.5rem;

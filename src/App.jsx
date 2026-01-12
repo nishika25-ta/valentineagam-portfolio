@@ -21,6 +21,46 @@ import { ChapterDivider } from './components/ChapterDividers';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Typing Animation Component for Splash Screen
+const TypingText = ({ text }) => {
+    const [displayText, setDisplayText] = useState('');
+    const [showCursor, setShowCursor] = useState(true);
+
+    useEffect(() => {
+        let currentIndex = 0;
+        const typingInterval = setInterval(() => {
+            if (currentIndex <= text.length) {
+                setDisplayText(text.slice(0, currentIndex));
+                currentIndex++;
+            } else {
+                clearInterval(typingInterval);
+            }
+        }, 100);
+
+        // Blinking cursor
+        const cursorInterval = setInterval(() => {
+            setShowCursor(prev => !prev);
+        }, 500);
+
+        return () => {
+            clearInterval(typingInterval);
+            clearInterval(cursorInterval);
+        };
+    }, [text]);
+
+    return (
+        <span>
+            {displayText}
+            <span style={{
+                opacity: showCursor ? 1 : 0,
+                transition: 'opacity 0.1s',
+                color: 'var(--hacker-red)',
+                textShadow: '0 0 10px var(--hacker-red)',
+            }}>_</span>
+        </span>
+    );
+};
+
 function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
@@ -80,26 +120,25 @@ function App() {
                             gap: '2rem',
                         }}
                     >
-                        {/* Animated Logo */}
+                        {/* Animated Hacker Name with Typing Effect */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2, type: 'spring' }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
+                                fontFamily: 'var(--font-hacker)',
+                                fontSize: 'clamp(1.8rem, 5vw, 3rem)',
+                                fontWeight: 900,
+                                color: 'var(--hacker-green)',
+                                textShadow: '0 0 15px var(--hacker-green), 0 0 30px var(--hacker-red), 0 0 60px rgba(191, 0, 255, 0.5), 0 0 90px rgba(255, 0, 64, 0.3)',
+                                letterSpacing: '0.15em',
+                                textTransform: 'uppercase',
                             }}
                         >
-                            <img
-                                src="/images/logo/valelogo.jpeg"
-                                alt="Valentine Agam Logo"
-                                style={{
-                                    width: '120px',
-                                    height: 'auto',
-                                    borderRadius: '12px',
-                                }}
-                            />
+                            <TypingText text="Valentine Agam" />
                         </motion.div>
 
                         {/* Progress Bar */}

@@ -110,18 +110,21 @@ const HeaderAdvanced = () => {
                     }}
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
-                    <motion.img
-                        whileHover={{ rotate: [0, -5, 5, -5, 0] }}
-                        transition={{ duration: 0.5 }}
-                        src="/images/logo/valelogo.jpeg"
-                        alt="Valentine Agam Logo"
+                    <motion.span
+                        whileHover={{ scale: 1.1, textShadow: '0 0 30px var(--hacker-green), 0 0 60px var(--hacker-red), 0 0 90px var(--hacker-green)' }}
+                        transition={{ duration: 0.3 }}
                         style={{
-                            width: '45px',
-                            height: 'auto',
-                            borderRadius: '8px',
-                            border: '2px solid var(--border)',
+                            fontFamily: 'var(--font-hacker)',
+                            fontSize: '1.2rem',
+                            fontWeight: 900,
+                            color: 'var(--hacker-green)',
+                            textShadow: '0 0 15px var(--hacker-green), 0 0 30px var(--hacker-red), 0 0 45px rgba(191, 0, 255, 0.4)',
+                            letterSpacing: '0.08em',
+                            textTransform: 'uppercase',
                         }}
-                    />
+                    >
+                        Valentine Agam
+                    </motion.span>
 
                     {/* Live Clock */}
                     <motion.span
