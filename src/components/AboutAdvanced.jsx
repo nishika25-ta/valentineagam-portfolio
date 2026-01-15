@@ -306,8 +306,8 @@ const AboutAdvanced = () => {
                         {/* Download Button */}
                         <motion.a
                             variants={itemVariants}
-                            href="/Valentine_Resume_Latest.pdf"
-                            download="Valentine_Agam_Resume.pdf"
+                            href="/Valentine_Resume_2026.pdf"
+                            download="Valentine_Resume_2026.pdf"
                             className="btn btn-primary"
                             whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(99, 102, 241, 0.5)' }}
                             whileTap={{ scale: 0.98 }}

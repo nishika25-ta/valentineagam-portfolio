@@ -11,11 +11,13 @@ import ExperienceTimeline from './components/ExperienceTimeline';
 import AboutAdvanced from './components/AboutAdvanced';
 import CTASection from './components/CTASection';
 import HeaderAdvanced from './components/HeaderAdvanced';
+import BottomNav from './components/BottomNav';
 import FooterAdvanced from './components/FooterAdvanced';
 import CustomCursor from './components/CustomCursor';
 import BackToTop from './components/BackToTop';
 import WaveDivider from './components/WaveDivider';
 import EasterEgg from './components/EasterEgg';
+import VantaBackground from './components/VantaBackground';
 import { SectionTransition, ParallaxSection, RevealSection } from './components/ScrollAnimations';
 import { ChapterDivider } from './components/ChapterDividers';
 
@@ -107,11 +109,11 @@ function App() {
                         key="loader"
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                        transition={{ duration: 0.8, ease: 'easeInOut' }}
                         style={{
                             position: 'fixed',
                             inset: 0,
-                            background: 'var(--bg-primary)',
+                            background: '#000',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -120,63 +122,63 @@ function App() {
                             gap: '2rem',
                         }}
                     >
-                        {/* Animated Hacker Name with Typing Effect */}
+                        {/* Animated Text */}
+                        <div
+                            className="splash-txt"
+                            style={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                color: '#eee',
+                                fontSize: 'clamp(2rem, 6vw, 4rem)',
+                                fontFamily: '"Crimson Text", serif',
+                                fontWeight: 600,
+                                letterSpacing: '0.02em',
+                            }}
+                        >
+                            {"Valentine Agam".split("").map((char, index) => (
+                                <span
+                                    key={index}
+                                    style={{
+                                        whiteSpace: char === " " ? "pre" : "normal",
+                                        display: char === " " ? "inline-block" : "inline",
+                                        opacity: 0,
+                                        transform: 'translate(-2px, 4px) scale(0.9)',
+                                        filter: 'blur(6px)',
+                                        animation: `fadeIn 0.5s ease-out ${index * 0.1}s forwards`,
+                                    }}
+                                >
+                                    {char}
+                                </span>
+                            ))}
+                        </div>
+
+                        {/* Subtitle */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
+                            transition={{ delay: "Valentine Agam".length * 0.1 + 0.5, duration: 0.8 }}
                             style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontFamily: 'var(--font-hacker)',
-                                fontSize: 'clamp(1.8rem, 5vw, 3rem)',
-                                fontWeight: 900,
-                                color: 'var(--hacker-green)',
-                                textShadow: '0 0 15px var(--hacker-green), 0 0 30px var(--hacker-red), 0 0 60px rgba(191, 0, 255, 0.5), 0 0 90px rgba(255, 0, 64, 0.3)',
-                                letterSpacing: '0.15em',
-                                textTransform: 'uppercase',
+                                fontSize: '0.9rem',
+                                color: 'rgba(238, 238, 238, 0.6)',
+                                fontFamily: '"Crimson Text", serif',
+                                fontStyle: 'italic',
                             }}
                         >
-                            <TypingText text="Valentine Agam" />
+                            Simplicity is the ultimate sophistication
                         </motion.div>
 
-                        {/* Progress Bar */}
-                        <div
-                            style={{
-                                width: '200px',
-                                height: '3px',
-                                background: 'var(--bg-card)',
-                                borderRadius: '2px',
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${Math.min(progress, 100)}%` }}
-                                transition={{ duration: 0.1 }}
-                                style={{
-                                    height: '100%',
-                                    background: 'linear-gradient(90deg, var(--accent), var(--accent-secondary))',
-                                    borderRadius: '2px',
-                                }}
-                            />
-                        </div>
+                        {/* CSS for character animation */}
+                        <style>{`
+                            @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 
-                        {/* Progress Percentage */}
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.3 }}
-                            style={{
-                                fontSize: '0.75rem',
-                                color: 'var(--text-muted)',
-                                letterSpacing: '0.2em',
-                                fontFamily: 'monospace',
-                            }}
-                        >
-                            {Math.min(Math.round(progress), 100)}%
-                        </motion.p>
+                            @keyframes fadeIn {
+                                to {
+                                    opacity: 1;
+                                    transform: translate(0, 0) scale(1);
+                                    filter: blur(0);
+                                }
+                            }
+                        `}</style>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -191,7 +193,8 @@ function App() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <HeaderAdvanced />
+                        {/* <HeaderAdvanced /> */}
+                        <BottomNav />
 
                         <main>
                             {/* Hero - Grand entrance */}

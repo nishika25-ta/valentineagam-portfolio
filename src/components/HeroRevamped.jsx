@@ -248,29 +248,38 @@ const HeroRevamped = () => {
                             ))}
                         </motion.h1>
 
-                        {/* Rotating Role Text */}
+                        {/* Glitch Role Text */}
                         <motion.div
                             variants={itemVariants}
                             style={{
-                                height: '2.5rem',
-                                overflow: 'hidden',
+                                height: '3rem',
+                                overflow: 'visible',
                                 marginBottom: '1.5rem',
+                                position: 'relative',
                             }}
                         >
                             <motion.p
                                 key={roleIndex}
-                                initial={{ y: 40, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                exit={{ y: -40, opacity: 0 }}
-                                transition={{ duration: 0.5, ease: 'easeOut' }}
+                                initial={{ opacity: 0 }}
+                                animate={{
+                                    opacity: 1,
+                                }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="glitch-text-transition"
                                 style={{
-                                    fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)',
-                                    fontWeight: 500,
-                                    background: 'linear-gradient(90deg, var(--text-secondary), var(--accent), var(--text-secondary))',
-                                    backgroundSize: '200% 100%',
-                                    WebkitBackgroundClip: 'text',
-                                    WebkitTextFillColor: 'transparent',
-                                    animation: 'shimmerText 3s ease infinite',
+                                    fontSize: 'clamp(1.3rem, 2.8vw, 1.8rem)',
+                                    fontWeight: 700,
+                                    letterSpacing: '0.05em',
+                                    color: 'rgba(255,255,255,0.95)',
+                                    textTransform: 'uppercase',
+                                    position: 'relative',
+                                    cursor: 'default',
+                                    textShadow: `
+                                        1px 1px rgba(246, 0, 153, 0.8),
+                                        -1px -1px rgba(15, 210, 255, 0.8),
+                                        -1px 0px rgba(255, 210, 0, 1)
+                                    `,
                                 }}
                             >
                                 {roles[roleIndex]}
@@ -366,11 +375,79 @@ const HeroRevamped = () => {
                 </motion.div>
             </div>
 
-            {/* CSS for shimmer animation */}
+            {/* CSS for glitch transition effect */}
             <style>{`
-                @keyframes shimmerText {
-                    0% { background-position: -200% 0; }
-                    100% { background-position: 200% 0; }
+                @keyframes glitch-wiggle {
+                    0% { 
+                        transform: skewX(24deg);
+                        text-shadow: 1px 1px rgba(246, 0, 153, 0.8),
+                                   -1px -1px rgba(15, 210, 255, 0.8),
+                                   -1px 0px rgba(255, 210, 0, 1);
+                    }
+                    10% { 
+                        transform: skewX(-8deg);
+                        text-shadow: -5px 3px rgba(246, 0, 153, 0.9),
+                                   3px -2px rgba(15, 210, 255, 0.9),
+                                   1px 1px rgba(255, 210, 0, 1);
+                    }
+                    20% { 
+                        transform: skewX(55deg);
+                        text-shadow: 8px -4px rgba(246, 0, 153, 1),
+                                   -6px 5px rgba(15, 210, 255, 1),
+                                   2px -3px rgba(255, 210, 0, 1);
+                    }
+                    30% { 
+                        transform: skewX(-90deg);
+                        text-shadow: -12px 8px rgba(246, 0, 153, 1),
+                                   10px -6px rgba(15, 210, 255, 1),
+                                   -3px 4px rgba(255, 210, 0, 1);
+                    }
+                    40% { 
+                        transform: skewX(29deg);
+                        text-shadow: 15px -10px rgba(246, 0, 153, 0.9),
+                                   -13px 9px rgba(15, 210, 255, 0.9),
+                                   4px -2px rgba(255, 210, 0, 1);
+                    }
+                    50% { 
+                        transform: skewX(-90deg);
+                        text-shadow: -20px 15px rgba(246, 0, 153, 1),
+                                   18px -12px rgba(15, 210, 255, 1),
+                                   -5px 7px rgba(255, 210, 0, 1);
+                    }
+                    60% { 
+                        transform: skewX(3deg);
+                        text-shadow: 25px -18px rgba(246, 0, 153, 0.9),
+                                   -22px 16px rgba(15, 210, 255, 0.9),
+                                   6px -4px rgba(255, 210, 0, 1);
+                    }
+                    70% { 
+                        transform: skewX(-2deg);
+                        text-shadow: -10px 8px rgba(246, 0, 153, 0.8),
+                                   9px -6px rgba(15, 210, 255, 0.8),
+                                   -2px 3px rgba(255, 210, 0, 1);
+                    }
+                    80% { 
+                        transform: skewX(1deg);
+                        text-shadow: 5px -4px rgba(246, 0, 153, 0.8),
+                                   -4px 3px rgba(15, 210, 255, 0.8),
+                                   1px -1px rgba(255, 210, 0, 1);
+                    }
+                    90% { 
+                        transform: skewX(10deg);
+                        text-shadow: 2px -2px rgba(246, 0, 153, 0.8),
+                                   -2px 2px rgba(15, 210, 255, 0.8),
+                                   -1px 1px rgba(255, 210, 0, 1);
+                    }
+                    100% { 
+                        transform: skewX(0deg);
+                        text-shadow: 1px 1px rgba(246, 0, 153, 0.8),
+                                   -1px -1px rgba(15, 210, 255, 0.8),
+                                   -1px 0px rgba(255, 210, 0, 1);
+                    }
+                }
+
+                .glitch-text-transition {
+                    animation: glitch-wiggle 0.4s ease-out;
                 }
             `}</style>
         </section>

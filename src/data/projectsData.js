@@ -219,6 +219,50 @@ export const projectsData = [
   },
   {
     id: 'modal-8',
+    title: 'ScreenLink - Wireless Display Extension',
+    shortTitle: 'ScreenLink',
+    category: 'Desktop/Mobile Development',
+    keywords: ['Electron', 'Kotlin', 'Screen Mirroring', 'Real-time Streaming', 'Hardware Acceleration'],
+    description: 'High-performance screen mirroring solution for Windows to Android with ultra-low latency and 144Hz support.',
+    fullDescription: `
+      <h3>📱 ScreenLink - Professional Screen Mirroring</h3>
+      <p>An open-source, high-performance screen mirroring application that transforms your Android device into a seamless wireless display extension for Windows, featuring professional-grade streaming capabilities.</p>
+      <h4>The Challenge & Goal</h4>
+      <p>The objective was to create a performant, low-latency screen mirroring solution that rivals commercial alternatives, supporting high refresh rates (up to 144Hz) and providing both WiFi and USB connectivity options for maximum flexibility.</p>
+      <h4>The Solution</h4>
+      <p>Built a comprehensive cross-platform solution featuring an Electron-based Windows desktop application for screen capture and streaming, paired with a native Kotlin Android application for high-performance video decoding and display rendering.</p>
+      <h4>Core Architecture</h4>
+      <ul>
+        <li><strong>Windows Application (Electron):</strong> Modern desktop interface with native screen capture API integration and intuitive connection management.</li>
+        <li><strong>Android Application (Kotlin):</strong> Native mobile app optimized for hardware-accelerated video decoding and smooth display rendering.</li>
+        <li><strong>Video Pipeline:</strong> H.264/H.265 encoding with GPU acceleration for minimal CPU overhead and maximum quality.</li>
+        <li><strong>Network Layer:</strong> Dual connectivity supporting both high-speed WiFi streaming and USB tethering for stable, low-latency transmission.</li>
+      </ul>
+      <h4>Key Features</h4>
+      <ul>
+        <li><strong>Ultra-Low Latency:</strong> Optimized streaming pipeline achieving sub-20ms latency for responsive real-time mirroring.</li>
+        <li><strong>High Refresh Rate:</strong> Support for up to 144Hz refresh rates, perfect for gaming and smooth scrolling applications.</li>
+        <li><strong>Hardware Acceleration:</strong> GPU-accelerated encoding/decoding for efficient, high-quality streaming without performance impact.</li>
+        <li><strong>Flexible Connectivity:</strong> Seamlessly switch between WiFi and USB connections based on your needs.</li>
+        <li><strong>Touch Input Passthrough:</strong> Control your Windows desktop directly from your Android device with touch gestures.</li>
+        <li><strong>Virtual Display Support:</strong> Integration with virtual display drivers for true screen extension beyond simple mirroring.</li>
+      </ul>
+      <h4>Technical Highlights</h4>
+      <ul>
+        <li><strong>Cross-Platform Development:</strong> Leveraging Electron for Windows and native Kotlin for Android ensures optimal performance on both platforms.</li>
+        <li><strong>Real-Time Processing:</strong> Sophisticated buffering and frame timing algorithms to minimize latency while maintaining smooth playback.</li>
+        <li><strong>Open Source:</strong> Community-driven development with a focus on transparency and continuous improvement.</li>
+      </ul>
+    `,
+    image: '/images/icons/screenlink.png',
+    images: [
+      '/images/contents/screenlink/hero.png',
+      '/images/contents/screenlink/desktop_ui.png',
+      '/images/contents/screenlink/architecture.png'
+    ]
+  },
+  {
+    id: 'modal-9',
     title: 'Darklace AI Meeting Assistant',
     shortTitle: 'Darklace',
     category: 'AI/Full-Stack',

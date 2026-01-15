@@ -111,16 +111,14 @@ const HeaderAdvanced = () => {
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                     <motion.span
-                        whileHover={{ scale: 1.1, textShadow: '0 0 30px var(--hacker-green), 0 0 60px var(--hacker-red), 0 0 90px var(--hacker-green)' }}
+                        whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.3 }}
                         style={{
-                            fontFamily: 'var(--font-hacker)',
-                            fontSize: '1.2rem',
-                            fontWeight: 900,
-                            color: 'var(--hacker-green)',
-                            textShadow: '0 0 15px var(--hacker-green), 0 0 30px var(--hacker-red), 0 0 45px rgba(191, 0, 255, 0.4)',
-                            letterSpacing: '0.08em',
-                            textTransform: 'uppercase',
+                            fontFamily: '"Crimson Text", serif',
+                            fontSize: '1.4rem',
+                            fontWeight: 600,
+                            color: '#eee',
+                            letterSpacing: '0.02em',
                         }}
                     >
                         Valentine Agam
@@ -184,8 +182,8 @@ const HeaderAdvanced = () => {
                     ))}
 
                     <MagneticButton
-                        href="/Valentine_Resume_Latest.pdf"
-                        download
+                        href="/Valentine_Resume_2026.pdf"
+                        download="Valentine_Resume_2026.pdf"
                         className="btn btn-secondary"
                         style={{ padding: '0.6rem 1.25rem', fontSize: '0.85rem' }}
                     >

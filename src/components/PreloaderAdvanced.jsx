@@ -1,24 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const PreloaderAdvanced = () => {
-    const [progress, setProgress] = useState(0);
-    const [showContent, setShowContent] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(true);
+    const txtRef = useRef(null);
+    const textContent = "Valentine Agam";
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => setShowContent(true), 300);
-                    return 100;
-                }
-                return prev + 2;
-            });
-        }, 30);
+        const animateText = () => {
+            if (txtRef.current) {
+                txtRef.current.innerHTML = "";
 
-        return () => clearInterval(interval);
+                textContent.split("").forEach((char, index) => {
+                    const span = document.createElement("span");
+                    span.textContent = char;
+                    span.style.animationDelay = `${index * 0.1}s`;
+                    span.style.display = char === " " ? "inline-block" : "inline";
+                    span.className = "animated-char";
+                    txtRef.current.appendChild(span);
+                });
+            }
+        };
+
+        animateText();
+
+        // Hide preloader after animation completes
+        const timer = setTimeout(() => {
+            setIsAnimating(false);
+        }, textContent.length * 100 + 1000); // Animation duration + 1 second
+
+        return () => clearTimeout(timer);
     }, []);
+
+    if (!isAnimating) {
+        return null;
+    }
 
     return (
         <motion.div
@@ -28,7 +44,7 @@ const PreloaderAdvanced = () => {
             style={{
                 position: 'fixed',
                 inset: 0,
-                background: 'linear-gradient(135deg, #0A0E27 0%, #151B3D 100%)',
+                background: '#000',
                 zIndex: 10000,
                 display: 'flex',
                 flexDirection: 'column',
@@ -37,114 +53,58 @@ const PreloaderAdvanced = () => {
                 overflow: 'hidden',
             }}
         >
-            {/* Animated Background */}
+            {/* Animated Text */}
             <div
+                ref={txtRef}
+                className="txt"
                 style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'var(--gradient-mesh)',
-                    opacity: 0.4,
-                    animation: 'mesh-shift 10s ease-in-out infinite',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    color: '#eee',
+                    fontSize: 'clamp(2rem, 6vw, 4rem)',
+                    fontFamily: '"Crimson Text", serif',
+                    cursor: 'default',
+                    fontWeight: 600,
+                    letterSpacing: '0.02em',
                 }}
             />
 
-            <div style={{ textAlign: 'center', zIndex: 1, maxWidth: '600px', padding: '2rem' }}>
-                {/* Logo/Name */}
-                <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <h1
-                        className="gradient-text"
-                        style={{
-                            fontSize: 'clamp(2rem, 6vw, 4rem)',
-                            marginBottom: '2rem',
-                            fontWeight: 800,
-                            letterSpacing: '-0.02em',
-                        }}
-                    >
-                        Valentine Agam
-                    </h1>
-                </motion.div>
-
-                {/* Progress Bar */}
-                <div
-                    style={{
-                        width: '100%',
-                        height: '4px',
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        borderRadius: 'var(--radius-full)',
-                        overflow: 'hidden',
-                        marginBottom: '1rem',
-                    }}
-                >
-                    <motion.div
-                        style={{
-                            height: '100%',
-                            background: 'var(--gradient-purple-cyan)',
-                            borderRadius: 'var(--radius-full)',
-                            boxShadow: 'var(--glow-cyan)',
-                        }}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ duration: 0.1 }}
-                    />
-                </div>
-
-                {/* Progress Text */}
-                <motion.div
-                    style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '1rem',
-                        color: 'var(--color-cyan-primary)',
-                        marginBottom: '0.5rem',
-                    }}
-                >
-                    {progress}%
-                </motion.div>
-
-                {showContent && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        style={{
-                            color: 'var(--color-text-secondary)',
-                            fontSize: '0.9rem',
-                        }}
-                    >
-                        Initializing portfolio...
-                    </motion.div>
-                )}
-            </div>
-
-            {/* Floating Orbs */}
-            <div
+            {/* Subtitle */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: textContent.length * 0.1 + 0.5, duration: 0.8 }}
                 style={{
-                    position: 'absolute',
-                    top: '20%',
-                    left: '10%',
-                    width: '300px',
-                    height: '300px',
-                    background: 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)',
-                    borderRadius: '50%',
-                    filter: 'blur(60px)',
-                    animation: 'float 8s ease-in-out infinite',
+                    marginTop: '2rem',
+                    fontSize: '0.9rem',
+                    color: 'rgba(238, 238, 238, 0.6)',
+                    fontFamily: '"Crimson Text", serif',
+                    fontStyle: 'italic',
                 }}
-            />
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: '20%',
-                    right: '10%',
-                    width: '400px',
-                    height: '400px',
-                    background: 'radial-gradient(circle, rgba(0, 217, 255, 0.3) 0%, transparent 70%)',
-                    borderRadius: '50%',
-                    filter: 'blur(60px)',
-                    animation: 'float 10s ease-in-out infinite reverse',
-                }}
-            />
+            >
+                Simplicity is the ultimate sophistication
+            </motion.div>
+
+            {/* CSS for character animation */}
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+                .animated-char {
+                    white-space: pre;
+                    opacity: 0;
+                    transform: translate(-2px, 4px) scale(0.9);
+                    filter: blur(6px);
+                    animation: fadeIn 0.5s ease-out forwards;
+                }
+                
+                @keyframes fadeIn {
+                    to {
+                        opacity: 1;
+                        transform: translate(0, 0) scale(1);
+                        filter: blur(0);
+                    }
+                }
+            `}</style>
         </motion.div>
     );
 };
