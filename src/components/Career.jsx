@@ -15,49 +15,47 @@ const Career = () => {
                     <div className="career-info-box">
                         <div className="career-info-in">
                             <div className="career-role">
-                                <h4>Full Stack Developer</h4>
-                                <h5>Freelance Projects</h5>
-                            </div>
-                            <h3>2023</h3>
-                        </div>
-                        <p>
-                            Developed various web applications using React, Node.js, and
-                            MongoDB. Created innovative solutions including auto-license tool,
-                            uploady file server, and react-searchx library. Built responsive
-                            and modern user interfaces with focus on performance and user
-                            experience.
-                        </p>
-                    </div>
-                    <div className="career-info-box">
-                        <div className="career-info-in">
-                            <div className="career-role">
-                                <h4>ML & Full Stack Developer</h4>
-                                <h5>Personal Projects</h5>
-                            </div>
-                            <h3>2024</h3>
-                        </div>
-                        <p>
-                            Expanded expertise in machine learning and advanced web
-                            technologies. Developed thyra CLI tool for project management,
-                            integrated WebSockets and real-time features. Contributed to
-                            open-source projects and built comprehensive full-stack
-                            applications with modern tech stack.
-                        </p>
-                    </div>
-                    <div className="career-info-box">
-                        <div className="career-info-in">
-                            <div className="career-role">
-                                <h4>Software Engineer Intern</h4>
-                                <h5>WSO2</h5>
+                                <h4>Business Development Executive</h4>
+                                <h5>Zenara Jaya</h5>
                             </div>
                             <h3>NOW</h3>
                         </div>
                         <p>
-                            Working on enterprise-level solutions and contributing to scalable
-                            software systems. Applying full-stack development skills with
-                            focus on backend technologies, API development, and system
-                            architecture. Collaborating with experienced engineers on
-                            cutting-edge projects.
+                            Leading digital transformation initiatives, replacing legacy systems
+                            with scalable SaaS integrations. Bridging technical and business needs
+                            using front-end expertise (React, JavaScript) to advise on solution
+                            architecture. Boosting SaaS adoption by translating technical features
+                            into business outcomes with focus on ROI and long-term scalability.
+                        </p>
+                    </div>
+                    <div className="career-info-box">
+                        <div className="career-info-in">
+                            <div className="career-role">
+                                <h4>Data Analyst Intern</h4>
+                                <h5>Sarawak Oil Palms Berhad (SOPB)</h5>
+                            </div>
+                            <h3>2024</h3>
+                        </div>
+                        <p>
+                            Supported geospatial projects with GIS and Python solutions, optimizing
+                            datasets and automating Excel reporting. Developed TensorFlow and
+                            YOLO-based machine learning models, achieving 90% accuracy in soil hole
+                            detection and 2x faster oil palm identification.
+                        </p>
+                    </div>
+                    <div className="career-info-box">
+                        <div className="career-info-in">
+                            <div className="career-role">
+                                <h4>B.Sc. Cognitive Science</h4>
+                                <h5>University Malaysia Sarawak (UNIMAS)</h5>
+                            </div>
+                            <h3>2022 - 2025</h3>
+                        </div>
+                        <p>
+                            Specialized in Computer Science, Data Science, and Artificial Intelligence.
+                            Achieved Dean's List in Year 3, completing coursework in Data Analysis,
+                            Software Development, Web Development, and AI. Developed YOLO-based
+                            detection models with 92% accuracy as Final Year Project.
                         </p>
                     </div>
                 </div>
