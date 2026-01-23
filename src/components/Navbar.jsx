@@ -1,31 +1,72 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
+import Lenis from "lenis";
 
 import Logo from "/images/logo.png";
 
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother;
+gsap.registerPlugin(ScrollTrigger);
+
+// Export a smoother-like interface for compatibility
+export let smoother = {
+    paused: () => { },
+    scrollTop: () => { },
+    scrollTo: () => { },
+    _lenis: null,
+};
 
 const Navbar = () => {
+    const lenisRef = useRef(null);
+
     useEffect(() => {
-        smoother = ScrollSmoother.create({
-            wrapper: "#smooth-wrapper",
-            content: "#smooth-content",
-            smooth: 1.7,
-            speed: 1.7,
-            effects: true,
-            autoResize: true,
-            ignoreMobileResize: true,
+        // Initialize Lenis for smooth scrolling (free alternative to ScrollSmoother)
+        const lenis = new Lenis({
+            duration: 1.7,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: "vertical",
+            gestureOrientation: "vertical",
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            touchMultiplier: 2,
         });
 
-        smoother.scrollTop(0);
-        smoother.paused(true);
+        lenisRef.current = lenis;
+
+        // Connect Lenis to GSAP ScrollTrigger
+        lenis.on("scroll", ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+
+        // Update the exported smoother object for compatibility
+        smoother = {
+            paused: (value) => {
+                if (value === true) {
+                    lenis.stop();
+                } else if (value === false) {
+                    lenis.start();
+                }
+            },
+            scrollTop: (value) => {
+                if (typeof value === "number") {
+                    lenis.scrollTo(value, { immediate: true });
+                }
+            },
+            scrollTo: (target, smooth = true) => {
+                lenis.scrollTo(target, { immediate: !smooth });
+            },
+            _lenis: lenis,
+        };
+
+        // Initially pause scrolling
+        lenis.stop();
 
         const links = document.querySelectorAll(".header ul a");
         links.forEach((elem) => {
@@ -33,16 +74,21 @@ const Navbar = () => {
             element.addEventListener("click", (e) => {
                 if (window.innerWidth > 1024) {
                     e.preventDefault();
-                    const elem = e.currentTarget;
                     const section = elem.getAttribute("data-href");
-                    smoother.scrollTo(section, true, "top top");
+                    lenis.scrollTo(section);
                 }
             });
         });
+
         window.addEventListener("resize", () => {
-            ScrollSmoother.refresh(true);
+            ScrollTrigger.refresh(true);
         });
+
+        return () => {
+            lenis.destroy();
+        };
     }, []);
+
     return (
         <>
             <div className="header">

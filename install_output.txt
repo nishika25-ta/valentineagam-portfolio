@@ -1,0 +1,33 @@
+﻿node.exe : npm warn 
+deprecated three-mesh
+-bvh@0.7.8: 
+Deprecated due to 
+three.js version 
+incompatibility. 
+Please use v0.8.0, 
+instead.
+At C:\Program Files\n
+odejs\npm.ps1:29 
+char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (npm war   
+ n deprec...0.8.0    
+, instead.:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+
+added 171 packages, and audited 172 packages in 7s
+
+15 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
