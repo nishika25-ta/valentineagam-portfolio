@@ -144,6 +144,7 @@ const TechMarquee = () => {
                                 fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
                                 fontWeight: 500,
                                 color: 'var(--text-primary)',
+                                fontFamily: '"Geist", sans-serif',
                             }}
                         >
                             {tech.name}
@@ -216,6 +217,7 @@ const TechMarquee = () => {
                                 fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)',
                                 fontWeight: 500,
                                 color: 'var(--text-primary)',
+                                fontFamily: '"Geist", sans-serif',
                             }}
                         >
                             {tech.name}

@@ -6,14 +6,12 @@ const BottomNav = () => {
 
     const navItems = [
         {
-            id: 'projects',
-            label: 'Projects',
+            id: 'landingDiv',
+            label: 'Home',
             icon: (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="7" height="7" />
-                    <rect x="14" y="3" width="7" height="7" />
-                    <rect x="14" y="14" width="7" height="7" />
-                    <rect x="3" y="14" width="7" height="7" />
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
                 </svg>
             )
         },
@@ -24,6 +22,18 @@ const BottomNav = () => {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
+                </svg>
+            )
+        },
+        {
+            id: 'work',
+            label: 'Projects',
+            icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
                 </svg>
             )
         },
@@ -66,6 +76,7 @@ const BottomNav = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 zIndex: 1000,
+                pointerEvents: 'none',
             }}
         >
             <div
@@ -79,6 +90,7 @@ const BottomNav = () => {
                     border: '1px solid rgba(255, 255, 255, 0.08)',
                     borderRadius: '100px',
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                    pointerEvents: 'auto',
                 }}
             >
                 {navItems.map((item, index) => (

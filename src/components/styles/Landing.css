@@ -1,0 +1,621 @@
+.landing-section {
+  width: 100%;
+  max-width: var(--cMaxWidth);
+  margin: auto;
+  position: relative;
+  height: var(--vh);
+}
+
+.landing-container {
+  width: var(--cWidth);
+  margin: auto;
+  height: 100%;
+  position: relative;
+  max-width: var(--cMaxWidth);
+}
+
+.landing-circle1 {
+  top: 0%;
+  left: 0%;
+  z-index: 15;
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  background-color: #fb8dff;
+  box-shadow: inset -50px 40px 50px rgba(84, 0, 255, 0.6);
+  filter: blur(60px);
+  border-radius: 50%;
+  animation: loadingCircle 5s linear infinite;
+}
+
+.nav-fade {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 130px;
+  background-image: linear-gradient(0deg,
+      transparent,
+      var(--backgroundColor) 70%);
+  pointer-events: none;
+  z-index: 12;
+  opacity: 0;
+  left: 0;
+}
+
+@keyframes loadingCircle {
+  0% {
+    transform: translate(-95%, -75%) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translate(-95%, -75%) rotateZ(360deg);
+  }
+}
+
+.landing-circle2 {
+  top: 50%;
+  right: 0%;
+  transform: translate(calc(100% - 2px), -50%);
+  z-index: 9;
+  position: fixed;
+  display: none;
+  width: 300px;
+  height: 300px;
+  background-color: #fb8dff;
+  box-shadow: inset -50px 40px 50px rgba(84, 0, 255, 0.6);
+  filter: blur(50px);
+  border-radius: 50%;
+  animation: loadingCircle2 5s linear infinite;
+}
+
+@keyframes loadingCircle2 {
+  100% {
+    transform: translate(calc(100% - 2px), -50%) rotate(360deg);
+  }
+}
+
+.landing-video,
+.landing-image {
+  position: absolute;
+  bottom: 0;
+  height: 95%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.landing-image img {
+  height: 100%;
+  z-index: 2;
+  position: relative;
+}
+
+.character-rim {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  z-index: 1;
+  background-color: #f59bf8;
+  transform: translate(-50%, 36%) scaleX(1.4);
+  box-shadow: inset 66px 35px 85px 0px rgba(85, 0, 255, 0.65);
+  filter: blur(50px);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 100%) scale(1.4);
+  opacity: 0;
+}
+
+.character-model {
+  height: 80%;
+  height: 80vh;
+  position: absolute;
+  max-width: 1920px;
+  max-height: 1080px;
+  transform: translateX(-50%);
+  width: 100%;
+  left: 50%;
+  z-index: 0;
+  bottom: 50px;
+  pointer-events: inherit;
+}
+
+.character-model::after {
+  content: "";
+  width: 100vw;
+  height: 250px;
+  background-image: linear-gradient(to bottom,
+      transparent,
+      var(--backgroundColor) 70%);
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  position: absolute;
+}
+
+.character-model::before {
+  content: "";
+  width: 100vw;
+  height: 700px;
+  background-color: var(--backgroundColor);
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  position: absolute;
+}
+
+.character-loaded .character-rim {
+  animation: backlight 3s forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
+.character-model canvas {
+  position: relative;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.character-hover {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.landing-intro-left {
+  position: absolute;
+  z-index: 9;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  text-align: left;
+}
+
+.landing-intro-right {
+  position: absolute;
+  z-index: 9;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  text-align: right;
+}
+
+.name-label,
+.role-label {
+  font-size: clamp(12px, 1.5vw, 16px);
+  color: var(--accentColor);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.role-tagline {
+  font-size: clamp(11px, 1.2vw, 14px);
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  font-weight: 300;
+}
+
+/* Animated Name Text Styles */
+.name-title {
+  font-family: "Crimson Text", serif;
+  font-size: clamp(28px, 5vw, 72px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin: 0;
+  color: #fff;
+}
+
+.name-title.name-accent {
+  color: var(--accentColor);
+}
+
+.animated-text {
+  display: flex;
+  flex-wrap: wrap;
+  color: inherit;
+  cursor: pointer;
+}
+
+.landing-intro-left .animated-text {
+  justify-content: flex-start;
+}
+
+.landing-intro-right .animated-text {
+  justify-content: flex-end;
+}
+
+.animated-char {
+  white-space: pre;
+  opacity: 0;
+  transform: translate(-2px, 4px) scale(0.9);
+  filter: blur(6px);
+  animation: charFadeIn 0.5s ease-out forwards;
+}
+
+.name-accent .animated-char {
+  color: var(--accentColor);
+}
+
+@keyframes charFadeIn {
+  to {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Role Text with Typewriter Effect */
+.role-text {
+  font-size: clamp(18px, 2.5vw, 32px);
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  min-height: 1.5em;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.landing-intro-right .role-text {
+  justify-content: flex-end;
+}
+
+.role-dynamic {
+  color: var(--accentColor);
+  font-weight: 500;
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--accentColor);
+  animation: blink 1s infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.scroll-mouse {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.scroll-wheel {
+  width: 4px;
+  height: 8px;
+  background: var(--accentColor);
+  border-radius: 2px;
+  margin-top: 8px;
+  animation: scrollWheel 2s ease-in-out infinite;
+}
+
+@keyframes scrollWheel {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: translateY(8px);
+  }
+}
+
+.scroll-arrow {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.scroll-text {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .scroll-indicator {
+    bottom: 20px;
+  }
+
+  .scroll-mouse {
+    width: 20px;
+    height: 32px;
+  }
+
+  .scroll-text {
+    font-size: 9px;
+  }
+}
+
+
+/* .landing-intro h1 span {
+   font-weight: 200; 
+} */
+
+.landing-info {
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+  bottom: 40px;
+  top: inherit;
+  z-index: 9;
+}
+
+.landing-info h3 {
+  font-size: 22px;
+  letter-spacing: 2px;
+  font-weight: 300;
+  color: var(--accentColor);
+  margin: 0;
+}
+
+.landing-info h2 {
+  margin: 0;
+  margin-top: -20px;
+  margin-left: 20px;
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.landing-h2-info-1 {
+  position: absolute;
+  top: 0;
+}
+
+h2.landing-info-h2 {
+  color: #c481ff;
+  font-size: 42px;
+  width: 120%;
+  margin: 0;
+  font-family: "Geist", sans-serif;
+  font-weight: 600;
+  position: relative;
+  margin-left: -5px;
+}
+
+.landing-h2-2 {
+  position: absolute;
+  top: 0;
+}
+
+.landing-info-h2::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 120%;
+  z-index: 3;
+  background-image: linear-gradient(0deg,
+      var(--backgroundColor) 40%,
+      rgba(0, 0, 0, 0) 110%);
+  top: 0;
+  left: 0;
+}
+
+@media screen and (min-width: 500px) {
+  .landing-circle2 {
+    display: block;
+  }
+
+  .character-model {
+    z-index: 0;
+  }
+
+  .landing-info h3 {
+    font-size: 18px;
+  }
+
+  .landing-info h2 {
+    font-size: 35px;
+    line-height: 40px;
+  }
+
+  h2.landing-info-h2 {
+    font-size: 38px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .character-model {
+    height: 80vh;
+  }
+
+  .landing-info h3 {
+    font-size: 25px;
+  }
+
+  .landing-info h2 {
+    font-size: 45px;
+    line-height: 42px;
+  }
+
+  h2.landing-info-h2 {
+    font-size: 55px;
+  }
+
+  .landing-intro-left {
+    left: 8%;
+  }
+
+  .landing-intro-right {
+    right: 8%;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .character-model {
+    height: 100vh;
+    bottom: 0;
+    z-index: 11;
+    position: fixed;
+  }
+
+  .character-model::after,
+  .character-model::before {
+    display: none;
+  }
+
+  .landing-intro-left {
+    left: 5%;
+  }
+
+  .landing-intro-right {
+    right: 5%;
+  }
+
+  .landing-info {
+    bottom: auto;
+    top: 51%;
+    z-index: inherit;
+    text-align: left;
+    transform: translate(0%, -50%);
+    right: auto;
+    left: 66%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .landing-intro-left {
+    left: 8%;
+  }
+
+  .landing-intro-right {
+    right: 8%;
+  }
+
+  .landing-info {
+    bottom: auto;
+    top: 51%;
+    z-index: inherit;
+    text-align: left;
+    transform: translate(0%, -50%);
+    right: auto;
+    left: 70%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .landing-intro-left {
+    left: 10%;
+  }
+
+  .landing-intro-right {
+    right: 10%;
+  }
+
+  .name-title {
+    font-size: clamp(48px, 6vw, 80px);
+  }
+
+  .role-text {
+    font-size: clamp(24px, 3vw, 40px);
+  }
+
+  .landing-info h3 {
+    font-size: 35px;
+  }
+
+  .landing-info h2 {
+    font-size: 65px;
+    line-height: 62px;
+  }
+
+  h2.landing-info-h2 {
+    font-size: 75px;
+  }
+}
+
+/* Mobile-first: Stack layout for small screens */
+@media screen and (max-width: 768px) {
+
+  .landing-intro-left,
+  .landing-intro-right {
+    position: absolute;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .landing-intro-left {
+    top: 15%;
+  }
+
+  .landing-intro-right {
+    top: auto;
+    bottom: 15%;
+  }
+
+  .landing-intro-left .animated-text,
+  .landing-intro-right .animated-text,
+  .landing-intro-right .role-text {
+    justify-content: center;
+  }
+
+  .name-title {
+    font-size: clamp(32px, 8vw, 48px);
+  }
+
+  .role-text {
+    font-size: clamp(16px, 4vw, 24px);
+  }
+
+  .name-label,
+  .role-label {
+    font-size: clamp(10px, 2.5vw, 14px);
+  }
+
+  .role-tagline {
+    font-size: clamp(10px, 2vw, 12px);
+  }
+}

@@ -8,81 +8,9 @@ const CTASection = () => {
                 padding: 'var(--space-3xl) 0',
                 position: 'relative',
                 overflow: 'hidden',
+                background: 'transparent',
             }}
         >
-            {/* Animated Gradient background */}
-            <motion.div
-                animate={{
-                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                }}
-                transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: 'linear',
-                }}
-                style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'linear-gradient(135deg, var(--bg-primary) 0%, rgba(99, 102, 241, 0.05) 50%, var(--bg-secondary) 100%)',
-                    backgroundSize: '200% 200%',
-                }}
-            />
-
-            {/* Multiple Glow effects */}
-            <div
-                style={{
-                    position: 'absolute',
-                    top: '30%',
-                    left: '20%',
-                    width: '400px',
-                    height: '400px',
-                    background: 'radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%)',
-                    pointerEvents: 'none',
-                    filter: 'blur(60px)',
-                }}
-            />
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: '20%',
-                    right: '15%',
-                    width: '500px',
-                    height: '500px',
-                    background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
-                    pointerEvents: 'none',
-                    filter: 'blur(80px)',
-                }}
-            />
-
-            {/* Floating particles */}
-            {[...Array(15)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    animate={{
-                        y: [0, Math.random() * -50 - 20, 0],
-                        x: [0, Math.sin(i) * 30, 0],
-                        opacity: [0.2, 0.8, 0.2],
-                        scale: [1, 1.5, 1],
-                    }}
-                    transition={{
-                        duration: 4 + Math.random() * 3,
-                        repeat: Infinity,
-                        delay: i * 0.2,
-                    }}
-                    style={{
-                        position: 'absolute',
-                        width: 3 + (i % 3),
-                        height: 3 + (i % 3),
-                        background: i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--accent-secondary)' : '#ec4899',
-                        borderRadius: '50%',
-                        top: `${10 + (i * 6) % 80}%`,
-                        left: `${5 + (i * 7) % 90}%`,
-                        boxShadow: `0 0 ${8 + i}px ${i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--accent-secondary)' : '#ec4899'}`,
-                        pointerEvents: 'none',
-                    }}
-                />
-            ))}
-
             <div className="container" style={{ position: 'relative', zIndex: 1 }}>
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}

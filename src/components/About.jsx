@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const About = () => {
     return (
-        <section id="about" className="section" style={{ position: 'relative', zIndex: 2 }}>
+        <section id="about" className="section about-section" style={{ position: 'relative', zIndex: 2 }}>
             <div className="container">
                 <div
                     style={{
@@ -94,7 +94,7 @@ const About = () => {
 
                         {/* Download Resume Button */}
                         <motion.a
-                            href="/Valentine_Resume_Latest.pdf"
+                            href="/Valentine_Resume_2026.pdf"
                             download="Valentine_Agam_Resume.pdf"
                             whileHover={{ scale: 1.05, y: -3 }}
                             whileTap={{ scale: 0.95 }}

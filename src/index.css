@@ -3,7 +3,8 @@
    Clean + Dynamic + Premium
    ========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=Creepster&family=Orbitron:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=Creepster&family=Orbitron:wght@700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
 
 :root {
   /* Color Palette - Rich Dark */
@@ -59,6 +60,13 @@
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Legacy Variables from Previous Portfolio kept for compatibility if needed */
+  --accentColor: #c2a4ff;
+  --backgroundColor: #0b080c;
+  --cWidth: calc(100% - 30px);
+  --cMaxWidth: 1920px;
+  --vh: 100vh;
 }
 
 /* ==========================================
@@ -79,11 +87,24 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background: var(--bg-primary);
+  background: transparent;
+  /* TRANSPARENT FOR STARS */
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  height: auto;
+  flex-grow: 1;
+  max-width: 100vw;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Geist", sans-serif;
 }
 
 #root {
@@ -100,7 +121,8 @@ body::before {
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15), transparent),
     radial-gradient(ellipse 60% 40% at 100% 100%, rgba(139, 92, 246, 0.1), transparent);
   pointer-events: none;
-  z-index: 0;
+  z-index: -5;
+  /* Behind content but in front of stars (-10) */
 }
 
 /* ==========================================
@@ -446,6 +468,10 @@ body::after {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
+
+  .techstack h2 {
+    font-size: 40px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -455,6 +481,12 @@ body::after {
 
   h1 {
     font-size: clamp(2rem, 10vw, 3rem);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    --cWidth: 94%;
   }
 }
 
@@ -611,7 +643,7 @@ body::after {
 }
 
 /* ==========================================
-   RESPONSIVE GRID UTILITIES  
+   RESPONSIVE GRID UTILITIES
    ========================================== */
 .grid-auto-fit {
   display: grid;
@@ -696,25 +728,70 @@ html {
   -webkit-backdrop-filter: blur(40px);
 }
 
-/* ==========================================
-   RESPONSIVE MEDIA QUERIES ENHANCEMENTS
-   ========================================== */
-@media (max-width: 1024px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
+.container-main {
+  width: 100%;
+  margin: auto;
+  position: relative;
 }
 
-@media (max-width: 640px) {
-  .stats-grid {
-    grid-template-columns: 1fr !important;
+.container1 {
+  width: var(--cWidth);
+  height: var(--vh);
+  margin: auto;
+  position: relative;
+}
+
+.main-active {
+  opacity: 0;
+  animation: fadeIn 1s 1;
+  animation-fill-mode: forwards;
+}
+
+.techstack {
+  width: 100%;
+  position: relative;
+  height: var(--vh);
+  margin: auto;
+  margin-top: 50px;
+  margin-bottom: -100px;
+}
+
+.techstack h2 {
+  font-size: 80px;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 120px;
+  left: 0;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.techstack-gradient {
+  background: linear-gradient(90deg,
+      #6366f1,
+      #8b5cf6,
+      #c084fc,
+      #f472b6,
+      #8b5cf6,
+      #6366f1);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientFlow 6s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
   }
 
-  h2 {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  50% {
+    background-position: 100% 50%;
   }
 
-  .section {
-    padding: var(--space-xl) 0;
+  100% {
+    background-position: 0% 50%;
   }
 }
