@@ -795,3 +795,177 @@ html {
     background-position: 0% 50%;
   }
 }
+
+/* ==========================================
+   MOBILE RESPONSIVE - TechStack
+   ========================================== */
+@media (max-width: 1024px) {
+  .techstack {
+    height: 80vh;
+    margin-top: 30px;
+    margin-bottom: -50px;
+  }
+
+  .techstack h2 {
+    font-size: 50px;
+    top: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .techstack {
+    height: 70vh;
+    margin-top: 20px;
+    margin-bottom: -30px;
+  }
+
+  .techstack h2 {
+    font-size: 36px;
+    top: 60px;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+
+  .techstack-title {
+    font-size: 32px !important;
+  }
+
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .section {
+    padding: var(--space-xl) 0;
+  }
+
+  /* Improve button touch targets */
+  .btn {
+    padding: 1rem 1.5rem;
+    min-height: 48px;
+    font-size: 0.95rem;
+  }
+
+  /* Card hover effects - disable on touch devices */
+  .card:hover {
+    transform: none;
+  }
+
+  .card:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (max-width: 480px) {
+  .techstack {
+    height: 60vh;
+    min-height: 400px;
+    margin-top: 10px;
+    margin-bottom: -20px;
+  }
+
+  .techstack h2 {
+    font-size: 28px;
+    top: 40px;
+    padding: 0 10px;
+  }
+
+  .container {
+    padding: 0 var(--space-xs);
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  /* Ensure minimum touch target sizes (48px) */
+  .btn {
+    padding: 0.875rem 1.25rem;
+    min-height: 48px;
+    min-width: 48px;
+    font-size: 0.9rem;
+  }
+
+  .tag {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* ==========================================
+   MOBILE BACKGROUND OPTIMIZATIONS
+   ========================================== */
+@media (max-width: 1024px), (hover: none) {
+  /* Disable expensive pseudo-element effects on mobile */
+  body::before,
+  body::after {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   MOBILE TECH STACK ADJUSTMENTS
+   ========================================== */
+@media (max-width: 1024px) {
+  .techstack {
+    height: 60vh;
+    min-height: 450px;
+  }
+  
+  .techstack .techstack-title {
+    font-size: 28px;
+    top: 30px;
+  }
+  
+  .tech-canvas {
+    margin-top: 60px;
+  }
+}
+
+/* ==========================================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+   ========================================== */
+@media (max-width: 1024px), (hover: none) {
+  /* Disable complex animations on mobile */
+  .animate-float {
+    animation: none;
+  }
+  
+  /* Simplify card transitions */
+  .card {
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover::before {
+    opacity: 0;
+  }
+  
+  /* Reduce blur effects which are expensive on mobile */
+  .glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Disable gradient border animations */
+  .gradient-border::before {
+    display: none;
+  }
+  
+  /* Simplify glow effects */
+  .glow-accent {
+    box-shadow: 0 0 30px var(--accent-glow);
+  }
+  
+  /* Optimize scrollbar for touch */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  /* Ensure native cursor on mobile */
+  * {
+    cursor: auto !important;
+  }
+}

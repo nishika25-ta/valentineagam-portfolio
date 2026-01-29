@@ -12,7 +12,7 @@ import {
 import setAnimations from "./utils/animationUtils";
 import Loading from "../Loading";
 
-const Scene = () => {
+const Scene = ({ isMobile = false }) => {
     const canvasDiv = useRef(null);
     const hoverDivRef = useRef(null);
     const sceneRef = useRef(new THREE.Scene());
@@ -20,9 +20,15 @@ const Scene = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const [character, setChar] = useState(null);
+    
     useEffect(() => {
         // Cleanup flag to prevent duplicate scenes in React StrictMode
         let isCleanedUp = false;
+        let animationFrameId = null;
+        let lastFrameTime = 0;
+        // Target 30fps on mobile, 60fps on desktop
+        const targetFPS = isMobile ? 30 : 60;
+        const frameInterval = 1000 / targetFPS;
 
         if (canvasDiv.current) {
             const rect = canvasDiv.current.getBoundingClientRect();
@@ -32,12 +38,13 @@ const Scene = () => {
 
             const renderer = new THREE.WebGLRenderer({
                 alpha: true,
-                antialias: true,
-                preserveDrawingBuffer: true, // Prevents context loss on hide
+                antialias: true, // Keep antialias for quality
+                preserveDrawingBuffer: true,
                 powerPreference: 'high-performance',
             });
             renderer.setSize(container.width, container.height);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
+            // Use device pixel ratio but cap at 2 for performance
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.toneMapping = THREE.ACESFilmicToneMapping;
             renderer.toneMappingExposure = 1;
 
@@ -50,12 +57,12 @@ const Scene = () => {
 
             canvas.addEventListener('webglcontextrestored', () => {
                 console.log('WebGL context restored.');
-                // Re-render the scene when context is restored
                 renderer.render(scene, camera);
             }, false);
 
             canvasDiv.current.appendChild(renderer.domElement);
 
+            // Camera settings - same for both mobile and desktop for consistent quality
             const camera = new THREE.PerspectiveCamera(14.5, aspect, 0.1, 1000);
             camera.position.z = 10;
             camera.position.set(0, 13.1, 24.7);
@@ -71,18 +78,18 @@ const Scene = () => {
             // Track visibility state for animation loop
             let isVisible = true;
 
-            const light = setLighting(scene);
+            const light = setLighting(scene, isMobile);
 
             // Progress callback for actual model loading
             const onProgress = (progress) => {
                 setLoadingProgress(Math.round(progress));
                 if (progress >= 100) {
-                    // Wait a bit after reaching 100% before hiding loading screen
+                    // Shorter wait on mobile
                     setTimeout(() => {
                         if (!isCleanedUp) {
                             setIsLoading(false);
                         }
-                    }, 3500);
+                    }, isMobile ? 2000 : 3500);
                 }
             };
 
@@ -119,14 +126,14 @@ const Scene = () => {
                             light.turnOnLights();
                             animations.startIntro();
 
-                            // Enable head tracking after intro animation completes (increased delay)
+                            // Enable head tracking after intro animation completes
                             setTimeout(() => {
                                 if (headBone && !isCleanedUp) {
                                     headBone.userData.trackingEnabled = true;
                                 }
-                            }, 2500); // Increased from 1000ms to 2500ms
+                            }, isMobile ? 1500 : 2500);
                         }
-                    }, 1500);
+                    }, isMobile ? 1000 : 1500);
 
                     window.addEventListener("resize", () =>
                         handleResize(renderer, camera, canvasDiv, character)
@@ -137,16 +144,28 @@ const Scene = () => {
             let mouse = { x: 0, y: 0 },
                 interpolation = { x: 0.1, y: 0.2 };
 
+            // Throttled mouse move handler for mobile
+            let mouseMoveRaf = null;
             const onMouseMove = (event) => {
-                handleMouseMove(event, (x, y) => (mouse = { x, y }));
+                if (isMobile && mouseMoveRaf) return;
+                
+                if (isMobile) {
+                    mouseMoveRaf = requestAnimationFrame(() => {
+                        handleMouseMove(event, (x, y) => (mouse = { x, y }));
+                        mouseMoveRaf = null;
+                    });
+                } else {
+                    handleMouseMove(event, (x, y) => (mouse = { x, y }));
+                }
             };
+            
             let debounce;
             const onTouchStart = (event) => {
                 const element = event.target;
                 debounce = setTimeout(() => {
                     element?.addEventListener("touchmove", (e) =>
                         handleTouchMove(e, (x, y) => (mouse = { x, y }))
-                    );
+                    , { passive: true });
                 }, 200);
             };
 
@@ -157,19 +176,25 @@ const Scene = () => {
                 });
             };
 
-            document.addEventListener("mousemove", (event) => {
-                onMouseMove(event);
-            });
+            document.addEventListener("mousemove", onMouseMove, { passive: true });
             const landingDiv = document.getElementById("landingDiv");
             if (landingDiv) {
-                landingDiv.addEventListener("touchstart", onTouchStart);
-                landingDiv.addEventListener("touchend", onTouchEnd);
+                landingDiv.addEventListener("touchstart", onTouchStart, { passive: true });
+                landingDiv.addEventListener("touchend", onTouchEnd, { passive: true });
             }
-            const animate = () => {
+            
+            const animate = (currentTime) => {
                 // Stop animation loop if component is cleaned up
                 if (isCleanedUp) return;
 
-                requestAnimationFrame(animate);
+                animationFrameId = requestAnimationFrame(animate);
+
+                // Frame rate limiting for mobile
+                if (isMobile) {
+                    const elapsed = currentTime - lastFrameTime;
+                    if (elapsed < frameInterval) return;
+                    lastFrameTime = currentTime - (elapsed % frameInterval);
+                }
 
                 // Always get delta first to prevent accumulation
                 const delta = clock.getDelta();
@@ -195,36 +220,42 @@ const Scene = () => {
                     }
                 }
 
-                // Always render to keep WebGL context alive and prevent context loss
+                // Always render to keep WebGL context alive
                 renderer.render(scene, camera);
             };
-            animate();
+            animate(0);
 
-            // Scroll-based show/hide for the character (only on desktop where it's fixed)
-            // Using Three.js model.visible instead of CSS to prevent WebGL context loss
+            // Scroll-based show/hide for the character
+            let scrollTicking = false;
             const handleScroll = () => {
-                if (canvasDiv.current && window.innerWidth > 1024) {
-                    const scrollY = window.scrollY;
-                    // Threshold where the hero section ends
-                    const heroEndThreshold = window.innerHeight * 0.5;
+                if (!scrollTicking) {
+                    requestAnimationFrame(() => {
+                        if (canvasDiv.current) {
+                            const scrollY = window.scrollY;
+                            // Threshold where the hero section ends
+                            const heroEndThreshold = window.innerHeight * (isMobile ? 0.7 : 0.5);
 
-                    // Binary visibility: fully visible in hero, hidden elsewhere
-                    const shouldBeVisible = scrollY < heroEndThreshold;
+                            // Binary visibility: fully visible in hero, hidden elsewhere
+                            const shouldBeVisible = scrollY < heroEndThreshold;
 
-                    // Update visibility flag for animation loop
-                    isVisible = shouldBeVisible;
+                            // Update visibility flag for animation loop
+                            isVisible = shouldBeVisible;
 
-                    // Hide/show using Three.js model visibility (keeps WebGL context active)
-                    if (character) {
-                        character.visible = shouldBeVisible;
-                    }
+                            // Hide/show using Three.js model visibility
+                            if (character) {
+                                character.visible = shouldBeVisible;
+                            }
 
-                    // Only disable pointer events when hidden
-                    canvasDiv.current.style.pointerEvents = shouldBeVisible ? 'auto' : 'none';
+                            // Only disable pointer events when hidden
+                            canvasDiv.current.style.pointerEvents = shouldBeVisible ? 'auto' : 'none';
+                        }
+                        scrollTicking = false;
+                    });
+                    scrollTicking = true;
                 }
             };
 
-            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('scroll', handleScroll, { passive: true });
             // Run immediately to set initial state
             handleScroll();
 
@@ -232,6 +263,12 @@ const Scene = () => {
                 // Set cleanup flag immediately
                 isCleanedUp = true;
 
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+                if (mouseMoveRaf) {
+                    cancelAnimationFrame(mouseMoveRaf);
+                }
                 clearTimeout(debounce);
                 scene.clear();
                 renderer.dispose();
@@ -249,7 +286,7 @@ const Scene = () => {
                 }
             };
         }
-    }, []);
+    }, [isMobile]);
 
     return (
         <>

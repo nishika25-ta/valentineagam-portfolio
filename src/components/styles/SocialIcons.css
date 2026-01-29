@@ -116,3 +116,64 @@ div.resume-button span {
     margin-top: -1.5px;
   }
 }
+
+/* Mobile Social Icons - Horizontal bottom bar */
+@media only screen and (max-width: 899px) {
+  .icons-section {
+    max-width: 100%;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  .social-icons {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 15px;
+    gap: 12px;
+    opacity: 0.9;
+    background: rgba(11, 8, 12, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .social-icons span {
+    width: 44px;
+    height: 44px;
+  }
+
+  .social-icons a {
+    font-size: 22px;
+  }
+
+  .social-icons a:hover {
+    transform: translate(-50%, -50%);
+  }
+
+  .resume-button {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .social-icons {
+    bottom: 10px;
+    gap: 8px;
+    padding: 10px 16px;
+  }
+
+  .social-icons span {
+    width: 40px;
+    height: 40px;
+  }
+
+  .social-icons a {
+    font-size: 20px;
+  }
+}

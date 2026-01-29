@@ -1,7 +1,5 @@
 import * as THREE from "three";
-
 import { useRef, useMemo, useState, useEffect } from "react";
-
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
@@ -23,13 +21,11 @@ const imageUrls = [
     "/images/typescript.webp",
     "/images/javascript.webp",
 ];
-const textures = imageUrls.map((url) => textureLoader.load(url));
 
-const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
-
-const spheres = [...Array(30)].map(() => ({
-    scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
-}));
+// Keep good geometry quality
+const createSphereGeometry = (isMobile) => {
+    return new THREE.SphereGeometry(1, isMobile ? 24 : 28, isMobile ? 24 : 28);
+};
 
 function SphereGeo({
     vec = new THREE.Vector3(),
@@ -37,20 +33,24 @@ function SphereGeo({
     r = THREE.MathUtils.randFloatSpread,
     material,
     isActive,
+    isMobile,
+    geometry,
 }) {
     const api = useRef(null);
 
     useFrame((_state, delta) => {
         if (!isActive) return;
         delta = Math.min(0.1, delta);
+        // Reduced force on mobile
+        const forceMult = isMobile ? 0.7 : 1;
         const impulse = vec
             .copy(api.current.translation())
             .normalize()
             .multiply(
                 new THREE.Vector3(
-                    -50 * delta * scale,
-                    -150 * delta * scale,
-                    -50 * delta * scale
+                    -50 * delta * scale * forceMult,
+                    -150 * delta * scale * forceMult,
+                    -50 * delta * scale * forceMult
                 )
             );
 
@@ -73,10 +73,10 @@ function SphereGeo({
                 args={[0.15 * scale, 0.275 * scale]}
             />
             <mesh
-                castShadow
-                receiveShadow
+                castShadow={!isMobile}
+                receiveShadow={!isMobile}
                 scale={scale}
-                geometry={sphereGeometry}
+                geometry={geometry}
                 material={material}
                 rotation={[0.3, 1, 1]}
             />
@@ -114,45 +114,86 @@ function Pointer({ vec = new THREE.Vector3(), isActive }) {
 
 const TechStack = () => {
     const [isActive, setIsActive] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+    const [isMobile, setIsMobile] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    });
+
+    // Memoize textures
+    const textures = useMemo(() => imageUrls.map((url) => textureLoader.load(url)), []);
+    
+    // Memoize geometry based on mobile state
+    const sphereGeometry = useMemo(() => createSphereGeometry(isMobile), [isMobile]);
 
     useEffect(() => {
-        const handleScroll = () => {
-            const scrollY = window.scrollY || document.documentElement.scrollTop;
-            const threshold = document
-                .getElementById("work")
-                .getBoundingClientRect().top;
-            setIsActive(scrollY > threshold);
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0);
         };
-        document.querySelectorAll(".header a").forEach((elem) => {
-            const element = elem;
-            element.addEventListener("click", () => {
-                const interval = setInterval(() => {
-                    handleScroll();
-                }, 10);
-                setTimeout(() => {
-                    clearInterval(interval);
-                }, 1000);
-            });
-        });
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    useEffect(() => {
+        let ticking = false;
+        
+        const handleScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const workElement = document.getElementById("work");
+                    if (workElement) {
+                        const scrollY = window.scrollY || document.documentElement.scrollTop;
+                        const threshold = workElement.getBoundingClientRect().top;
+                        setIsActive(scrollY > threshold);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        // Check if section is in viewport for lazy rendering
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInView(entry.isIntersecting);
+            },
+            { threshold: 0.1 }
+        );
+
+        const techSection = document.querySelector('.techstack');
+        if (techSection) {
+            observer.observe(techSection);
+        }
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => {
             window.removeEventListener("scroll", handleScroll);
+            observer.disconnect();
         };
     }, []);
+
+    // Good quality materials - same on mobile and desktop
     const materials = useMemo(() => {
-        return textures.map(
-            (texture) =>
-                new THREE.MeshPhysicalMaterial({
-                    map: texture,
-                    emissive: "#ffffff",
-                    emissiveMap: texture,
-                    emissiveIntensity: 0.3,
-                    metalness: 0.5,
-                    roughness: 1,
-                    clearcoat: 0.1,
-                })
+        return textures.map((texture) => 
+            new THREE.MeshPhysicalMaterial({
+                map: texture,
+                emissive: "#ffffff",
+                emissiveMap: texture,
+                emissiveIntensity: 0.3,
+                metalness: 0.5,
+                roughness: 1,
+                clearcoat: 0.1,
+            })
         );
-    }, []);
+    }, [textures]);
+
+    // Fewer spheres on mobile (18 vs 30) - still looks good
+    const spheres = useMemo(() => {
+        const count = isMobile ? 18 : 30;
+        return [...Array(count)].map(() => ({
+            scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
+        }));
+    }, [isMobile]);
 
     return (
         <div className="techstack">
@@ -160,43 +201,63 @@ const TechStack = () => {
                 <span className="techstack-gradient">My Techstack</span>
             </h2>
 
-            <Canvas
-                shadows
-                gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
-                camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
-                onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
-                className="tech-canvas"
-            >
-                <ambientLight intensity={1} />
-                <spotLight
-                    position={[20, 20, 25]}
-                    penumbra={1}
-                    angle={0.2}
-                    color="white"
-                    castShadow
-                    shadow-mapSize={[512, 512]}
-                />
-                <directionalLight position={[0, 5, -4]} intensity={2} />
-                <Physics gravity={[0, 0, 0]}>
-                    <Pointer isActive={isActive} />
-                    {spheres.map((props, i) => (
-                        <SphereGeo
-                            key={i}
-                            {...props}
-                            material={materials[Math.floor(Math.random() * materials.length)]}
-                            isActive={isActive}
-                        />
-                    ))}
-                </Physics>
-                <Environment
-                    files="/models/char_enviorment.hdr"
-                    environmentIntensity={0.5}
-                    environmentRotation={[0, 4, 2]}
-                />
-                <EffectComposer enableNormalPass={false}>
-                    <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
-                </EffectComposer>
-            </Canvas>
+            {isInView && (
+                <Canvas
+                    shadows={!isMobile}
+                    gl={{ 
+                        alpha: true, 
+                        stencil: false, 
+                        depth: false, 
+                        antialias: true,
+                        powerPreference: 'high-performance',
+                    }}
+                    camera={{ 
+                        position: [0, 0, isMobile ? 22 : 20], 
+                        fov: isMobile ? 35 : 32.5, 
+                        near: 1, 
+                        far: 100 
+                    }}
+                    onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
+                    className="tech-canvas"
+                    dpr={Math.min(window.devicePixelRatio, 2)}
+                    frameloop={isActive ? "always" : "demand"}
+                >
+                    <ambientLight intensity={1} />
+                    <spotLight
+                        position={[20, 20, 25]}
+                        penumbra={1}
+                        angle={0.2}
+                        color="white"
+                        castShadow={!isMobile}
+                        shadow-mapSize={isMobile ? [256, 256] : [512, 512]}
+                    />
+                    <directionalLight position={[0, 5, -4]} intensity={2} />
+                    <Physics gravity={[0, 0, 0]}>
+                        <Pointer isActive={isActive} />
+                        {spheres.map((props, i) => (
+                            <SphereGeo
+                                key={i}
+                                {...props}
+                                material={materials[i % materials.length]}
+                                isActive={isActive}
+                                isMobile={isMobile}
+                                geometry={sphereGeometry}
+                            />
+                        ))}
+                    </Physics>
+                    <Environment
+                        files="/models/char_enviorment.hdr"
+                        environmentIntensity={isMobile ? 0.3 : 0.5}
+                        environmentRotation={[0, 4, 2]}
+                    />
+                    {/* Disable post-processing on mobile - big performance gain */}
+                    {!isMobile && (
+                        <EffectComposer enableNormalPass={false}>
+                            <N8AO color="#0f002c" aoRadius={2} intensity={1.15} />
+                        </EffectComposer>
+                    )}
+                </Canvas>
+            )}
         </div>
     );
 };

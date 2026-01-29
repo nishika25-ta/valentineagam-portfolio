@@ -16,43 +16,64 @@ const InteractiveCursor = () => {
     const cursorY = useSpring(mouseY, springConfig);
 
     useEffect(() => {
+        let rafId = null;
+        let lastX = 0;
+        let lastY = 0;
+        
         const moveCursor = (e) => {
-            mouseX.set(e.clientX);
-            mouseY.set(e.clientY);
-        };
-
-        const handleMouseOver = (e) => {
-            const target = e.target;
-
-            // Check for interactive elements
-            if (target.tagName === 'A' || target.tagName === 'BUTTON' ||
-                target.closest('a') || target.closest('button') ||
-                target.classList.contains('card') || target.closest('.card') ||
-                target.dataset.cursor) {
-                setIsHovering(true);
-                setCursorVariant('hover');
-
-                // Custom cursor text
-                if (target.dataset.cursorText) {
-                    setHoverText(target.dataset.cursorText);
-                } else if (target.tagName === 'A' || target.closest('a')) {
-                    setHoverText('View');
-                } else if (target.tagName === 'BUTTON' || target.closest('button')) {
-                    setHoverText('Click');
-                } else {
-                    setHoverText('');
-                }
-            } else {
-                setIsHovering(false);
-                setCursorVariant('default');
-                setHoverText('');
+            // Throttle with requestAnimationFrame
+            if (rafId === null) {
+                rafId = requestAnimationFrame(() => {
+                    mouseX.set(e.clientX);
+                    mouseY.set(e.clientY);
+                    lastX = e.clientX;
+                    lastY = e.clientY;
+                    rafId = null;
+                });
             }
         };
 
-        window.addEventListener('mousemove', moveCursor);
-        document.addEventListener('mouseover', handleMouseOver);
+        let hoverTimeout;
+        const handleMouseOver = (e) => {
+            const target = e.target;
+
+            // Debounce hover state changes
+            clearTimeout(hoverTimeout);
+            hoverTimeout = setTimeout(() => {
+                // Check for interactive elements
+                if (target.tagName === 'A' || target.tagName === 'BUTTON' ||
+                    target.closest('a') || target.closest('button') ||
+                    target.classList.contains('card') || target.closest('.card') ||
+                    target.dataset.cursor) {
+                    setIsHovering(true);
+                    setCursorVariant('hover');
+
+                    // Custom cursor text
+                    if (target.dataset.cursorText) {
+                        setHoverText(target.dataset.cursorText);
+                    } else if (target.tagName === 'A' || target.closest('a')) {
+                        setHoverText('View');
+                    } else if (target.tagName === 'BUTTON' || target.closest('button')) {
+                        setHoverText('Click');
+                    } else {
+                        setHoverText('');
+                    }
+                } else {
+                    setIsHovering(false);
+                    setCursorVariant('default');
+                    setHoverText('');
+                }
+            }, 10);
+        };
+
+        window.addEventListener('mousemove', moveCursor, { passive: true });
+        document.addEventListener('mouseover', handleMouseOver, { passive: true });
 
         return () => {
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+            }
+            clearTimeout(hoverTimeout);
             window.removeEventListener('mousemove', moveCursor);
             document.removeEventListener('mouseover', handleMouseOver);
         };

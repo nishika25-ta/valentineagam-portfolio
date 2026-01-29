@@ -74,7 +74,7 @@ const CTASection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.5 }}
-                        style={{ display: 'flex', gap: '1.25rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '3rem' }}
+                        style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '2.5rem', padding: '0 1rem' }}
                     >
                         <MagneticButton
                             href="mailto:valentineagam6@gmail.com"
@@ -230,11 +230,12 @@ const MagneticButton = ({ children, href, primary, ...props }) => {
             style={{
                 x: xSpring,
                 y: ySpring,
-                padding: '1rem 2.5rem',
-                fontSize: '1rem',
+                padding: 'clamp(0.875rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem)',
+                fontSize: 'clamp(0.875rem, 2.5vw, 1rem)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
+                minHeight: '48px',
             }}
             whileHover={{
                 scale: 1.05,

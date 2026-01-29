@@ -23,15 +23,40 @@ const Navbar = () => {
     const lenisRef = useRef(null);
 
     useEffect(() => {
-        // Initialize Lenis for smooth scrolling (free alternative to ScrollSmoother)
+        // Detect mobile/touch devices
+        const isMobile = window.innerWidth <= 1024 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Only initialize Lenis on desktop for better mobile performance
+        if (isMobile) {
+            // On mobile, use native smooth scroll
+            smoother = {
+                paused: () => {},
+                scrollTop: (value) => {
+                    if (typeof value === "number") {
+                        window.scrollTo({ top: value, behavior: 'smooth' });
+                    }
+                },
+                scrollTo: (target, smooth = true) => {
+                    const element = typeof target === 'string' ? document.querySelector(target) : target;
+                    if (element) {
+                        element.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+                    }
+                },
+                _lenis: null,
+            };
+            return;
+        }
+
+        // Initialize Lenis for smooth scrolling (desktop only)
         const lenis = new Lenis({
-            duration: 1.7,
+            duration: 1.2, // Reduced from 1.7 for better performance
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: "vertical",
             gestureOrientation: "vertical",
             smoothWheel: true,
             wheelMultiplier: 1,
             touchMultiplier: 2,
+            smoothTouch: false, // Disable on touch devices
         });
 
         lenisRef.current = lenis;

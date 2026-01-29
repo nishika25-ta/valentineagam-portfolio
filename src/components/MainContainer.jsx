@@ -11,21 +11,35 @@ import BottomNav from "./BottomNav";
 import CTASection from "./CTASection";
 import Footer from "./Footer";
 
-const MainContainer = ({ children }) => {
-    const [isDesktopView, setIsDesktopView] = useState(() =>
-        typeof window !== "undefined" ? window.innerWidth > 1024 : false
-    );
+const MainContainer = ({ children, isMobile: isMobileProp }) => {
+    const [isDesktopView, setIsDesktopView] = useState(() => {
+        if (typeof window === "undefined") return false;
+        return window.innerWidth > 1024 && !('ontouchstart' in window) && navigator.maxTouchPoints === 0;
+    });
 
     useEffect(() => {
+        let resizeTimeout;
+        
         const resizeHandler = () => {
-            setIsDesktopView(window.innerWidth > 1024);
-            setSplitText();
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const isDesktop = window.innerWidth > 1024 && !('ontouchstart' in window) && navigator.maxTouchPoints === 0;
+                setIsDesktopView(isDesktop);
+                setSplitText();
+            }, 150);
         };
 
-        resizeHandler();
+        // Initial call
+        const isDesktop = window.innerWidth > 1024 && !('ontouchstart' in window) && navigator.maxTouchPoints === 0;
+        setIsDesktopView(isDesktop);
+        setSplitText();
+        
         window.addEventListener("resize", resizeHandler);
 
-        return () => window.removeEventListener("resize", resizeHandler);
+        return () => {
+            window.removeEventListener("resize", resizeHandler);
+            clearTimeout(resizeTimeout);
+        };
     }, []);
 
     return (
@@ -33,11 +47,12 @@ const MainContainer = ({ children }) => {
             <SocialIcons />
             <BottomNav />
 
-            {/* Desktop-only character */}
+            {/* Character - show on desktop (fixed position) */}
             {isDesktopView && children}
 
             <div id="smooth-wrapper">
                 <div id="smooth-content">
+                    {/* On mobile, character is inside Landing section */}
                     <Landing>{!isDesktopView && children}</Landing>
                     <About />
                     <Career />
